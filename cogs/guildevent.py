@@ -12,9 +12,18 @@ class guildEvent(commands.Cog):
     
     @commands.Cog.listener()
     async def on_command_error(self, ctx):
+      #Invalid arg error throws are dealt with adequately
       if isinstance(err, errors.MissingRequiredArgument) or isinstance(err, errors.BadArgument):
         await ctx.send(f"Sorry, that's not a valid argument. Please try again with a different argument.")
-      if isinstance(err, errors.CommandIN
+      #Weird API errors dealt with. Nothing to really do about it but eh
+      if isinstance(err, errors.CommandInvokeError):
+        await ctx.send("There was an error processing this command. Please try again in a bit.")
+      #loginfailure error dealt with
+      if isinstance(err, errors.LoginFailure):
+        bot.run(token) #trying to log in again
+      # invalid discord data
+      if isinstance(err, errors.InvalidData):
+        await ctx.send("Recieved invalid data from discord. Try again later.")
   
 def setup(bot):
   bot.add_cog(guildEvent(client)
