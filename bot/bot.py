@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix = 'itami')
+bot = commands.Bot(command_prefix = 'waka')
 
 @bot.event
 async def on_ready():
