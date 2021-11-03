@@ -26,6 +26,19 @@ class mod(commands.Cog):
         await ctx.send(f"Successfully banned {member} for {reason}")
       else:
         await ctx.send(f"Sorry, you don't have permissions to ban {member}.")
+    
+    @commands.command()
+    async def ratecheck(self, ctx, member, msgnum = 500):
+      #no check here, anyone can use this as it's just a checking command to see how much a user has been active. I added it to moderation as a tool.
+      async with ctx.typing()
+      counter = 0
+      async for message in channel.history(limit=msgnum):
+        if message.author == member:
+          counter += 1
+        else:
+          pass
+      await ctx.send(f"User {member} has sent {counter} out of the past {msgnum} messages or {msgnum/counter} of the past {msgnum} messages.")
+       
   
    @commands.command()
    async def newrole(self, ctx, rolename, color):
