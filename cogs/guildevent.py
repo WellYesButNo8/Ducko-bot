@@ -9,6 +9,7 @@ class guildEvent(commands.Cog):
     async def on_member_join(self, member):
         await member.send(f"Welcome to {member.guild.name}.")
         embed = discord.Embed( title = f"Welcome, {member}! hope you have a great time at {member.guild.name}.", color = 0x283747)
+        await ctx.send(embed = embed)
     
     @commands.Cog.listener()
     async def on_command_error(self, ctx):
@@ -26,5 +27,5 @@ class guildEvent(commands.Cog):
         await ctx.send("Recieved invalid data from discord. Try again later.")
   
 def setup(bot):
-  bot.add_cog(guildEvent(client)
+  bot.add_cog(guildEvent(bot)
                            
