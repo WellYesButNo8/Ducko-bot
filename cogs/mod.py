@@ -55,19 +55,13 @@ class mod(commands.Cog):
         role.color = arg
       else: 
         await ctx.send("sorry, not an option")
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+        
+        
+    @commands.command()
+    async def hoist(self, ctx, role, num: int):
+      rolechange = Checks.edit_roles(ctx.author)
+      if rolechange == True:
+        await guild.edit_role_positions(role.position += num)
+        await ctx.send(f"raised role {role}'s position by {num}")
+      else:
+        await ctx.send("Sorry, you don't have permission") 
