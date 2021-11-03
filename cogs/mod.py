@@ -44,18 +44,20 @@ class mod(commands.Cog):
         await ctx.send("Sorry, you're unable to change permissions with a command. Kind of useless but sorry ¯\_(ツ)_/¯")
       elif attr == "display":
         if role.hoist == True:
-          role.hoist = False
+          role.edit(hoist = False)
           await ctx.send("Role display changed.")
         else:
-          role.hoise = True
+          role.edit(hoist = True)
           await ctx.send("Role display changed.")       
       elif attr == "name":
-        role.name = arg
+        role.edit(name=arg)
       
       elif attr == "color":
-        role.color = arg
+        role.edit(color=arg)
       else: 
         await ctx.send("sorry, not an option")
+     else:
+      await ctx.send("Sorry, you don't have permission to change this role.")
         
         
     @commands.command()
