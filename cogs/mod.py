@@ -45,9 +45,10 @@ class mod(commands.Cog):
       elif attr == "display":
         if role.hoist == True:
           role.hoist = False
+          await ctx.send("Role display changed.")
         else:
           role.hoise = True
-       
+          await ctx.send("Role display changed.")       
       elif attr == "name":
         role.name = arg
       
@@ -65,6 +66,14 @@ class mod(commands.Cog):
         await ctx.send(f"raised role {role}'s position by {num}")
       else:
         await ctx.send("Sorry, you don't have permission") 
+     
+    @commands.command()
+    async def nick(self, ctx, member, name):
+      mod = Checks.mod_check(ctx.author)
+      if member == ctx.author or mod == True:
+          member.edit(nick=name)
+      else:
+        await ctx.send("Sorry, you don't have permissions to nick someone else.")
         
 def setup(bot):
   bot.add_cog(mod(bot))
