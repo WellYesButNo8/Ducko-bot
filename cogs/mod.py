@@ -65,3 +65,6 @@ class mod(commands.Cog):
         await ctx.send(f"raised role {role}'s position by {num}")
       else:
         await ctx.send("Sorry, you don't have permission") 
+        
+def setup(bot):
+  bot.add_cog(mod(bot))
