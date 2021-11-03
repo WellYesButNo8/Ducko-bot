@@ -30,7 +30,7 @@ class mod(commands.Cog):
     @commands.command()
     async def ratecheck(self, ctx, member, msgnum = 500):
       #no check here, anyone can use this as it's just a checking command to see how much a user has been active. I added it to moderation as a tool.
-      async with ctx.typing()
+      async with ctx.channel.typing():
       counter = 0
       async for message in channel.history(limit=msgnum):
         if message.author == member:
