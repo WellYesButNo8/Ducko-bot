@@ -25,6 +25,10 @@ class guildEvent(commands.Cog):
       # invalid discord data
       if isinstance(err, errors.InvalidData):
         await ctx.send("Recieved invalid data from discord. Try again later.")
+      
+      if isinstance(err, errors.CommandNotFound):
+        embed = discord.Embed(title = "Sorry, command not found.", description = "Try waka help for commands.", color = 0xE74C3C)
+        await ctx.send(embed = embed)
   
 def setup(bot):
   bot.add_cog(guildEvent(bot)
