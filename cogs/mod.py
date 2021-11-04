@@ -9,24 +9,21 @@ class mod(commands.Cog):
    
   @commands.command()
   @commands.has_permissions(kick_members=True)
-  async def kick(self, ctx, member):
-    mod = Checks.mod_check(ctx.author)
-    if mod == True:
-      await member.kick()
-      await ctx.send(f"Kicked member {member}.")
-    else:
-      await ctx.send(f"You don't have the permissions to kick {member}.")
-      
+  async def kick(self, ctx, member: discord.Member):
+    await member.kick()
+    await ctx.send(f"Kicked member {member}.")
       
    @commands.command()
    @commands.has_permissions(ban_members=True)
-   async def ban(self, ctx, member, reason):
-        await Guild.ban(member, reason=reason)
-        await ctx.send(f"Successfully banned {member} for {reason}")
+   async def ban(self, ctx, member: discord.Member, reason):
+    await Guild.ban(member, reason=reason)
+    await ctx.send(f"Successfully banned {member} for {reason}")
         
     @commands.command()
-    async def ratecheck(self, ctx, member, msgnum = 500):
+    async def ratecheck(self, ctx, member: discord.Member, msgnum: int):
       #no check here, anyone can use this as it's just a checking command to see how much a user has been active. I added it to moderation as a tool.
+      if msgnum == None:
+        msgnum = 500
       async with ctx.channel.typing():
       counter = 0
       async for message in channel.history(limit=msgnum):
@@ -38,7 +35,7 @@ class mod(commands.Cog):
        
   
    @commands.command()
-    @commands.has_permissions(manage_guild=True)
+   @commands.has_permissions(manage_guild=True)
    async def newrole(self, ctx, rolename, color):
       await ctx.guild.create_role(name=rolename,colour=discord.Color(color), hoist = True)
       await ctx.send("Role created.")
@@ -67,18 +64,14 @@ class mod(commands.Cog):
         
     @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def hoist(self, ctx, role, num: int):
-        await guild.edit_role_positions(role.position += num)
-        await ctx.send(f"raised role {role}'s position by {num}")
-      else:
-        await ctx.send("Sorry, you don't have permission") 
+    async def hoist(self, ctx, role: discord.Role, num: int):
+      await guild.edit_role_positions(role.position += num)
+      await ctx.send(f"raised role {role}'s position by {num}")
      
     @commands.command()
     @commands.has_permissions(manage_guild=True)
-    async def nick(self, ctx, member, name):
-      mod = Checks.mod_check(ctx.author)
-      if member == ctx.author or mod == True:
-          member.edit(nick=name)
+    async def nick(self, ctx, member: discord.Member, name):
+      member.edit(nick=name)
         
 def setup(bot):
   bot.add_cog(mod(bot))
