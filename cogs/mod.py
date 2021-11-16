@@ -72,6 +72,19 @@ class mod(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def nick(self, ctx, member: discord.Member, name):
       member.edit(nick=name)
+    
+    @commands.command()
+    @commands.has_permissions(manage_members = True)
+    @commands.guild_only
+    async def mute(self, ctx, member: discord.Member):
+      muterole = next((g for g in ctx.guild.roles if g.name == "Muted"), None)
+      if not muterole:
+        no_muterole = Paginator.roleError("No Muterole found.", "Are you sure you've created a role called **Muted**?")
+        await ctx.send(embed = no_muterole)
+      else:
+        bot.add_role(muterole)
+        mutesuccess = Paginator.cmdSuccess(f"{member} muted until unmuted by a moderator.")
+        await ctx.send(
         
 def setup(bot):
   bot.add_cog(mod(bot))
