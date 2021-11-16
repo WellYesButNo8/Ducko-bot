@@ -79,7 +79,7 @@ class mod(commands.Cog):
     async def mute(self, ctx, member: discord.Member):
       muterole = next((g for g in ctx.guild.roles if g.name == "Muted"), None)
       if not muterole:
-        no_muterole = Paginator.roleError("No Muterole found.", "Are you sure you've created a role called **Muted**?")
+        no_muterole = Paginator.roleError("No Muterole found.", "Are you sure you've created a role called **Muted**?", "Remember, it's case sensitive." )
         await ctx.send(embed = no_muterole)
       else:
         bot.add_role(muterole)
