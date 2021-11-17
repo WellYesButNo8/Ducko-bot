@@ -21,4 +21,8 @@ class Reddit(commands.Cog):
         embed = discord.Embed(title = ransub.title, url = ransub.url, color = 0xD3500)
         embed.set_footer(text = f"Requested by {ctx.author.display_name)
         await ctx.send(embed = embed)
+
+
+def setup(bot):
+  bot.add_cog(Reddit(bot))
   
