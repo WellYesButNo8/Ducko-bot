@@ -1,65 +1,80 @@
 import discord
 from discord.ext import commands, tasks
-import youtube_dl as yt
+import discordSuperUtils
+from discordSuperUtils import MusicManager
 
-# class for error handling
+MusicManager = MusicManager(bot, client_id=client_id, client_secret=client_secret, spotify_support=True)
 
-class VoiceNotPresent():
-  pass
-
-
-
-class music(commands.Cog):
+  
+  class music(commands.Cog):
   
   def __init__(self, bot):
     self.bot = bot
+  
+  
+  @MusicManager.event()
+  async def on_inactivity_disconnect(ctx):
+    await ctx.send(f"I have left the channel due to inactivity..")
+  
+  
+    @commands.command()
+    async def join(self, ctx):
+      embed=discord.Embed(
+                    title="Joined Voice Channel",
+                    description=f"I have joined {channel.mention}",
+                    color=0x00FF00)
+        if channel := await self.MusicManager.join(ctx):
+            await ctx.send(embed= embed)
     
   
-  @commands.command()
-  async def join(self, ctx):
-    if ctx.author.voice is None:
-      await ctx.send("Please join a voice channel, then use this command again.")
-    
-    vc = ctx.author.voice.channel
-    if ctx.voice_client is None:
-      await vc.connect()
-    else:
-      await ctx.voice_client.move_to(vc)
-    
-   
-  @tasks.loop(seconds = 5.0)
-  async def vc_empty(self, ctx):
-    voice_channel = ctx.voice.channel
-    if voice_channel.members is None:
-      vc.disconnect()
-    else:
-      pass
-  
-   @commands.command()
-   async def play(self,ctx,url):
-    ctx.voice_client.stop()
-    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-    YDL_OPTIONS = {'format':"bestaudio"}
-    vc = ctx.voice_client
+    @commands.command(aliases=["p"])
+    async def play(self, ctx, *, query: str):
+        if not ctx.voice_client or not ctx.voice_client.is_connected():
+            await ctx.send("Join a voice call and use ducko join before using the play command.")
 
-    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-      info = ydl.extract_info(url, download=False)
-      url2 = info['formats'][0]['url']
-      source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-      vc.play(source)
+        async with ctx.typing():
+            player = await self.MusicManager.create_player(query, ctx.author)
+
+        if player:
+            if await self.MusicManager.queue_add(
+                players=player, ctx=ctx
+            ) and not await self.MusicManager.play(ctx):
+                await ctx.send("Added to queue")
+        else:
+            await ctx.send("Query not found.")
     
    
-  @commands.command()
-  async def pause(self, ctx):
-    await ctx.voice_client.pause()
-    await ctx.message.add_reaction("⏸")
-    await ctx.send("Music paused.")
-    
-  @commands.command()
-  async def resume(self, ctx):
-    await ctx.voice_client.pause()
-    await ctx.message.add_reaction("⏯")
-    await ctx.send("Music resumed.")
+    @commands.command()
+    async def pause(self, ctx):
+        if await self.MusicManager.pause(ctx):
+            await ctx.send("Player paused.")
+
+    @commands.command()
+    async def resume(self, ctx):
+        if await self.MusicManager.resume(ctx):
+            await ctx.send("Player resumed.")
+
+    @commands.command()
+    async def volume(self, ctx, volume: int = None):
+        if current_volume := await self.MusicManager.volume(ctx, volume):
+            await ctx.send(
+                embed=discord.Embed(title="Current Volume", description=f"The current volume is {current_volume}%",color=0x00FF00)
+                if volume is None
+                else discord.Embed(title="Volume Changed",description=f"Volume has been changed to {current_volume}%",color=0x00FF00))
+            
+            
+      @commands.command()
+      async def skip(self, ctx, index: int = None):
+        if skipped_player := await self.MusicManager.skip(ctx, index):
+            await ctx.send(
+                embed=discord.Embed(
+                    title=f"Skipped to {index}"
+                    if index is not None
+                    else "Skipped to Next Song",
+                    description=f"Skipped to '{skipped_player}'.",
+                    color=0x00FF00,
+                )
+            )
   
   
   
