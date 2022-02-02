@@ -34,9 +34,9 @@ class Reddit(commands.Cog):
         embed.set_footer(text = f"Requested by {ctx.author.display_name)
         await ctx.send(embed = embed)
 
-  @commands.command(aliases = ['mb', "boardmarket", "mechmarket", "Mechmarket", "newboards", "r/mechmarket", description = "Provides the user with an AWW - worthy post from r/Aww")
-  async def mechboards(self, ctx):
-        subreddit = reddit.subreddit('mechmarket')
+  @commands.command(description = "Ducko images is just ducks:/")
+  async def images(self, ctx):
+        subreddit = reddit.subreddit('duck')
         top = subreddit.top(limit = 50)
         for submission in top:
           topsubs = []
@@ -45,6 +45,8 @@ class Reddit(commands.Cog):
         embed = discord.Embed(title = ransub.title, url = ransub.url, color = 0xD3500)
         embed.set_footer(text = f"Requested by {ctx.author.display_name)
         await ctx.send(embed = embed)
+
+  
 
  
   
