@@ -7,11 +7,13 @@ class pokebutton(ui.Button):
     def __init__(self, label=label, row=row, **kwargs):
         super().__init__(label, row, pokemon, **kwargs)
 
-class Abilities(ui.Button):
+class Abilities(pokebutton):
     def callback(self, interaction):
         view=self.view
         embed=discord.Embed(title="Abilities", description="all potential abilities this pokemon has")
-        for 
+        for ability in pokemon.abilities:
+            embed.add_field(name=ability, description=None, inline=True)
+        
 class Pokemon(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
