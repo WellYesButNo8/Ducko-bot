@@ -15,8 +15,8 @@ class Checks():
     return ctx.author.guild_permissions.manage_guild
 
   def mod_check(ctx):
-    if ctx.author.guild_permissions.ban_members and ctx.author.guild_permissions.kick_members == True:
-      return True
+    if ctx.author.guild_permissions.ban_members and ctx.author.guild_permissions.kick_members and ctx.author.guild_permissions.manage_guild== True:
+      return True #long sentance lmao /|\ one line above
     else: 
       return False
   
