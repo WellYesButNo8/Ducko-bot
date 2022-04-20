@@ -32,14 +32,6 @@ class Pokemon(commands.Cog):
         await ctx.send(embed=pokembed, view=view)
         
     
-    @commands.command()
-    async def findbycolor(self, color):
-        pokecolor=requests.get("https://pokeapi.co/api/v2/pokemon-color/{color}/")
-        for i in pokecolor.pokemon_species:
-            newpage=pg._new_page(i)
-            pg._add_page(newpage)
-        
-        #incomplete
 
 
 def setup(bot):
