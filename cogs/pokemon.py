@@ -2,6 +2,7 @@ from discord import ui
 import discord
 from discord.ext import commands
 import requests
+from utils.Pagination import Paginator as pg 
 
 class pokebutton(ui.Button):
     def __init__(self, label=label, row=row, **kwargs):
@@ -21,8 +22,26 @@ class Pokemon(commands.Cog):
     
     
     @commands.command()
-    async def stat(self, pokemon):
+    async def stat(self, pokemon): 
+        view=discord.ui.View()
         poke=requests.get("https://pokeapi.co/api/v2/pokemon/{pokemon}/")
+        abilites = Abilities(style=discord.ButtonStyle.grey, label="Abilities", pokemon=poke)
+        view.add(abilities)
         sprite=requests.get("")
         pokembed=discord.Embed(title=poke.name, description="Pokemon number {poke.id}")
-        pokembed.add_field(name="{poke.name}'s potential abilities",description=poke.abilities,inline=False)
+        await ctx.send(embed=pokembed, view=view)
+        
+    
+    @commands.command()
+    async def findbycolor(self, color):
+        pokecolor=requests.get("https://pokeapi.co/api/v2/pokemon-color/{color}/")
+        for i in pokecolor.pokemon_species:
+            newpage=pg._new_page(i)
+            pg._add_page(newpage)
+        
+        #incomplete
+
+
+def setup(bot):
+  bot.add_cog(Pokemon(bot))
+
