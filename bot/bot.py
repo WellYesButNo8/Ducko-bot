@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix = 'waka')
+bot = commands.Bot(command_prefix = '!', intents=discord.Intents(messages=True, guilds=True, members=True))
 
 @bot.event
 async def on_ready():
